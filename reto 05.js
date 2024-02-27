@@ -64,8 +64,78 @@ function cyberReindeer(road, time) {
   return result;
 }
 
+// COMPLEJIDAD O (n * m)
+
+// donde n es la longitud de la cadena road y m es el número de unidades de tiempo especificadas por time.
+
+// El bucle for se ejecuta time+1 veces. Cada iteración del bucle implica una serie de operaciones que dependen del tamaño de la cadena road.
+// En cada iteración del bucle, se ejecutan operaciones como la sustitución de caracteres y la comprobación de condiciones. Estas operaciones se realizan en tiempo lineal en relación con la longitud de la cadena road.
+
+// Dado que el bucle for se ejecuta time+1 veces y cada iteración implica operaciones lineales en relación con la longitud de road, la complejidad temporal total es O(n⋅m)
+
 // Ejemplo de uso:
 const road = "S..|...|..";
 const time = 10;
 const result = cyberReindeer(road, time);
 console.log(result);
+
+// Resultado esperado
+/*
+[
+'S..|...|..', // estado inicial
+'.S.|...|..', // avanza el trineo la carretera
+'..S|...|..', // avanza el trineo la carretera
+'..S|...|..', // el trineo para en la barrera
+'..S|...|..', // el trineo para en la barrera
+'...S..._..', // se abre la barrera, el trineo avanza
+'..._S.._..', // avanza el trineo la carretera
+'..._.S._..', // avanza el trineo la carretera
+'..._..S_..', // avanza el trineo la carretera
+'..._...S..', // avanza por la barrera abierta
+]
+  
+// RESULTADO OBTENIDO
+[
+  "S..|...|..",
+  ".S.|...|..",
+  "..S|...|..",
+  "..S|...|..",
+  "..S|...|..",
+  "..S*...*..",
+  "...S...*..",
+  "....S..*..",
+  ".....S.*..",
+  "......S*..",
+  ".......S..",
+]
+*/
+//CASI CASI,  funciona pero con error, no vuelve a reponer la barrera abierta una vez pasa alli 'S'
+
+// SOLUCIÓN DADA:
+/*
+Vamos a basar la solución en un regex que reemplazará S. y S*, ya que son los únicos movimientos válidos, pero tenemos un problema, y es que si pasamos por un *, debemos volver a ponerlo cuando hayamos avanzado nuevamente y esa posición quede atrás.
+
+Además, no olvidar que en el momento que pasen 5 segundos o iteraciones, debemos convertir todas las | a *.
+
+Lo que haremos para conservar los * es revisar si el reno se movió, en ese caso guardaremos la posición a la que se movió y en el siguiente movimiento la reemplazaremos, cosa que solo pasará hasta que el reno se pueda mover, ya que nuestro regex solo se ejecuta en movimientos válidos.
+
+Para guardar la posición y siguiente posición del reno, debemos usar una variable auxiliar, porque la del tiempo no mantiene los mismos valores de la posición del reno, puesto que a veces este no se mueve, esta variable, llamada a solo aumentará valor si el reno se movió:
+
+const newRoad = road.replace(/S[\.\*]/, `${b}S`);
+if (newRoad != road) {
+  a++;
+  b = road[a];
+}
+
+// Se agrega el movimiento a la lista
+
+road = newRoad;
+moves.push(road);
+
+Algunas consideraciones:
+
+    b se debe iniciar en let b = "."
+    moves por defecto ya trae el camino original let moves = [road]
+    Ya que tenemos el camino original en moves, solo ejecutaremos el ciclo time-1 veces for (let i = 1; i < time; i++)
+
+    */
