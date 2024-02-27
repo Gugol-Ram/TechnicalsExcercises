@@ -58,3 +58,42 @@ console.log(result1); // -> [a]{a}{a}(aaaaaa){b}(b)
 
  aunque siempre es posible mejorar los algoritmos, para este problema en particular, la complejidad O(n+m) ya es bastante eficiente y no es probable que haya una manera significativa de reducirla sin cambiar la lógica del algoritmo.
 */
+
+/*
+##SOLUCION PROPUESTA:
+
+function organizeGifts(gifts) {
+  const countGifts = gifts.match(/\d+/g)
+  const nameGifts = gifts.match(/[^0-9]/g)
+
+  let response = ""
+  let i = 0
+
+  for (let c of countGifts) {
+    const g = nameGifts[i]
+    let a = ""
+
+    c = +c
+
+    a += `[${g}]`.repeat(c / 50)
+    c %= 50
+
+    a += `{${g}}`.repeat(c / 10)
+    c %= 10
+
+    a += `(${g.repeat(c)})`.repeat(+!!c)
+
+    response += a
+    i++
+  }
+
+  return response
+}
+
+bastante mas sencilla parece.
+complejidad: O(n)
+
+ambas soluciones tienen la misma complejidad O(n), donde n es la longitud de la cadena de entrada. La diferencia entre O(n) y O(n + m) es que la segunda incluye dos variables n y m, que pueden representar diferentes longitudes o tamaños de entrada.
+
+En el caso de las dos soluciones que estamos comparando, ambas tienen una complejidad lineal O(n), donde n es la longitud de la cadena de entrada. En ambos casos, la complejidad de la solución depende principalmente del tamaño de la cadena de entrada y no del número de grupos de regalos.
+*/
